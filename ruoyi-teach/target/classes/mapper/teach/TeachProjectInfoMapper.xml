@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.teach.mapper.TeachProjectInfoMapper">
+
+    <resultMap type="com.ruoyi.teach.domain.entity.TeachProjectInfo" id="TeachProjectInfoResult">
+        <result property="id" column="Id"/>
+        <result property="prjName" column="PrjName"/>
+        <result property="prjCode" column="PrjCode"/>
+        <result property="prjType" column="PrjType"/>
+        <result property="prjStatus" column="PrjStatus"/>
+        <result property="prjDesc" column="PrjDesc"/>
+        <result property="startDate" column="StarDate"/>
+        <result property="endDate" column="EndDate"/>
+        <result property="manager" column="Manager"/>
+        <result property="money" column="Money"/>
+        <result property="remark" column="Remark"/>
+        <result property="createBy" column="CreateBy"/>
+        <result property="updateBy" column="UpdateBy"/>
+        <result property="createTime" column="CreateTime"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="deleteTime" column="DeleteTime"/>
+    </resultMap>
+
+
+    <select id="findByConditions" resultMap="TeachProjectInfoResult">
+        SELECT * FROM project_info
+        <where>
+            <if test="projectName != null">
+                <bind name="projectNamePattern" value="'%' + projectName + '%'" />
+                AND PrjName LIKE #{projectNamePattern}
+            </if>
+            <if test="projectCode != null">
+                <bind name="projectCodePattern" value="'%' + projectCode + '%'" />
+                AND PrjCode LIKE #{projectCodePattern}
+            </if>
+            <if test="projectManager != null">
+                <bind name="projectManagerPattern" value="'%' + projectManager + '%'" />
+                AND manager LIKE #{projectManagerPattern}
+            </if>
+            <if test="projectStatus != null">
+                <bind name="projectStatusPattern" value="'%' + projectStatus + '%'" />
+                AND PrjStatus LIKE #{projectStatusPattern}
+            </if>
+<!--            <if test="deviceCode != null">-->
+<!--                <bind name="codePattern" value="'%' + deviceCode + '%'" />-->
+<!--                AND DeviceCode LIKE #{codePattern}-->
+<!--            </if>-->
+<!--            <if test="model != null">-->
+<!--                <bind name="modelPattern" value="'%' + model + '%'" />-->
+<!--                AND Model LIKE #{modelPattern}-->
+<!--            </if>-->
+<!--            <if test="status != null">-->
+<!--                AND Status = #{status}-->
+<!--            </if>-->
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <delete id="deleteProjectinfoByIds" parameterType="Long">
+        delete from project_info where Id in
+        <foreach collection="array" item="infoId" open="(" separator="," close=")">
+            #{infoId}
+        </foreach>
+    </delete>
+
+
+</mapper>
